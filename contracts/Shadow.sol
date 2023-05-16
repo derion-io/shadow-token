@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BSL-1.1
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@derivable/erc1155-timelock/contracts/token/ERC1155/IERC1155.sol";
