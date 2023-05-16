@@ -17,9 +17,9 @@ describe("Shadow test", function () {
     await shadowFactory.deployShadow(1)
     const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)
 
-    const FakeShadow = await ethers.getContractFactory('FakeShadow')
-    const fakeShadow = await FakeShadow.deploy(shadowFactory.address, 1)
-    await fakeShadow.deployed()
+    const Helper = await ethers.getContractFactory('Helper')
+    const helper = await Helper.deploy(shadowFactory.address, 1)
+    await helper.deployed()
     
     await shadowFactory.mint(owner.address, 1, 1000000, 0x0)
 
@@ -28,12 +28,12 @@ describe("Shadow test", function () {
       accountA,
       shadow,
       shadowFactory,
-      fakeShadow
+      helper
     }
   }
 
   it("Only shadow can call safeTransferFromByShadow", async function() {
-    const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
+    const {owner, accountA, shadowFactory, helper} = await loadFixture(fixture)
 
     await expect(shadowFactory.safeTransferFromByShadow(
       owner.address,
@@ -43,14 +43,15 @@ describe("Shadow test", function () {
       100
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
 
-    await expect(fakeShadow.transfer(
+    await expect(helper.transferFrom(
+      owner.address,
       accountA.address,
       100
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
   })
 
   it("Only shadow can call setApprovalForAllByShadow", async function() {
-    const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
+    const {owner, accountA, shadowFactory, helper} = await loadFixture(fixture)
 
     await expect(shadowFactory.setApprovalForAllByShadow(
       1,
@@ -59,7 +60,7 @@ describe("Shadow test", function () {
       accountA.address
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
 
-    await expect(fakeShadow.approve(
+    await expect(helper.approve(
       accountA.address,
       100
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
