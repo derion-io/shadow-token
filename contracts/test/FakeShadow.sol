@@ -5,16 +5,16 @@ import "@derivable/erc1155-timelock/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
-import "./interfaces/IERC1155Supply.sol";
-import "./interfaces/IShadowFactory.sol";
+import "../interfaces/IERC1155Supply.sol";
+import "../interfaces/IShadowFactory.sol";
 
-contract Shadow is IERC20, IERC20Metadata {
+contract FakeShadow is IERC20, IERC20Metadata {
     address public immutable ORIGIN;
     uint public immutable ID;
 
-    constructor() {
-        ORIGIN = msg.sender;
-        ID = IShadowFactory(msg.sender).deployingID();
+    constructor(address origin, uint id) {
+        ORIGIN = origin;
+        ID = id;
     }
 
     function name() public view virtual override returns (string memory) {
