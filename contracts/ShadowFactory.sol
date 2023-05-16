@@ -24,9 +24,17 @@ abstract contract ShadowFactory is IShadowFactory, ERC1155Timelock {
         return Create2.computeAddress(bytes32(id), BYTECODE_HASH, address(this));
     }
 
-    function getShadowMetadata(uint, bytes32) public pure override returns (bytes32 value) {
-        return 0;
-    } 
+    function getShadowName(uint) public pure virtual returns (string memory) {
+        return "Derivable Shadow Token";
+    }
+
+    function getShadowSymbol(uint) public pure virtual returns (string memory) {
+        return "DST";
+    }
+
+    function getShadowDecimals(uint) public pure virtual returns (uint8) {
+        return 18;
+    }
 
     modifier onlyShadow(uint id) {
         address shadowToken = computeShadowAddress(id);

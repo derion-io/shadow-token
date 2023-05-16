@@ -18,15 +18,15 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function name() public view virtual override returns (string memory) {
-        return "Derivable Shadow Token";
+        return IShadowFactory(ORIGIN).getShadowName(ID);
     }
 
     function symbol() public view virtual override returns (string memory) {
-        return "DST";
+        return IShadowFactory(ORIGIN).getShadowSymbol(ID);
     }
 
     function decimals() public view virtual override returns (uint8) {
-        return 18;
+        return IShadowFactory(ORIGIN).getShadowDecimals(ID);
     }
 
     function totalSupply() public view override returns (uint256) {
