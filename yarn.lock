@@ -111,9 +111,9 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@derivable/erc1155-timelock@git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#dev":
+"@derivable/erc1155-timelock@git+ssh://git@github.com:derivable-labs/erc1155-timelock.git":
   version "4.8.2"
-  resolved "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#3457762c1f512cbce6026d1fd424f940ca91730f"
+  resolved "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#b302210c38ec7341f6eb2b9ffbf99400296190e2"
 
 "@derivable/utr@git+ssh://git@github.com:derivable-labs/utr.git":
   version "1.0.0"
