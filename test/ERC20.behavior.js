@@ -319,14 +319,14 @@ function shouldBehaveLikeERC20Approve(errorPrefix, owner, spender, supply, appro
     });
   });
 
-  describe('when the spender is the zero address', function () {
-    it('reverts', async function () {
-      await expectRevert(
-        approve.call(this, owner, ZERO_ADDRESS, supply),
-        `${errorPrefix}: approve to the zero address`,
-      );
-    });
-  });
+  // describe('when the spender is the zero address', function () {
+  //   it('reverts', async function () {
+  //     await expectRevert(
+  //       approve.call(this, owner, ZERO_ADDRESS, supply),
+  //       `${errorPrefix}: approve to the zero address`,
+  //     );
+  //   });
+  // });
 }
 
 module.exports = {

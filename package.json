@@ -1,13 +1,12 @@
 {
-  "name": "@derivable/core",
+  "name": "@derivable/shadow-token",
   "version": "1.0.0",
-  "license": "BUSL-1.1",
+  "license": "MIT",
   "scripts": {
     "clean": "rimraf ./build/ ./cache/ ./artifacts/",
     "prettier": "prettier --write **/*.sol",
     "compile": "hardhat compile",
-    "test": "hardhat test --parallel",
-    "test-gas": "hardhat test",
+    "test": "hardhat test",
     "coverage": "hardhat coverage",
     "testnet": "hardhat run --network testnet",
     "mainnet": "hardhat run --network mainnet",
@@ -16,7 +15,7 @@
   "dependencies": {
     "@atixlabs/hardhat-time-n-mine": "^0.0.5",
     "@derivable/erc1155-timelock": "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#dev",
-    "@derivable/utr": "git+ssh://git@github.com:derivable-labs/utr.git#f38beb53de9b6f4773b7d59d387501885879de23",
+    "@derivable/utr": "git+ssh://git@github.com:derivable-labs/utr.git",
     "bignumber.js": "^9.1.1",
     "bn.js": "^5.2.1",
     "canonical-weth": "^1.4.0",
