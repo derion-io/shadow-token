@@ -14,9 +14,9 @@ abstract contract ShadowFactory is IShadowFactory, ERC1155Timelock {
     // transient storage
     uint public deployingID;
 
-    function deployShadow(uint id) external returns (address pool) {
+    function deployShadow(uint id) external returns (address shadowToken) {
         deployingID = id;
-        pool = Create2.deploy(0, bytes32(id), type(Shadow).creationCode);
+        shadowToken = Create2.deploy(0, bytes32(id), type(Shadow).creationCode);
         delete deployingID;
     }
 
