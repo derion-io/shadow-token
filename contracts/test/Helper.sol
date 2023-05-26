@@ -17,6 +17,6 @@ contract Helper {
     }
 
     function transferFrom(address from, address to, uint256 amount) public {
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, from, to, ID, amount);
+        IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID, amount);
     }
 }

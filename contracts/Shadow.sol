@@ -53,31 +53,31 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, msg.sender, to, ID, amount);
+        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, to, ID, amount);
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
-        address spender = msg.sender;
-        _spendAllowance(from, spender, amount);
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(spender, from, to, ID, amount);
+        _spendAllowance(from, msg.sender, amount);
+        IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID, amount);
         emit Transfer(from, to, amount);
         return true;
     }
 
     function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
-        address owner = msg.sender;
-        _approve(owner, spender, allowance(owner, spender) + addedValue);
+        _approve(msg.sender, spender, allowance(msg.sender, spender) + addedValue);
         return true;
     }
 
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        address owner = msg.sender;
-        uint256 currentAllowance = allowance(owner, spender);
+        if (IERC1155(ORIGIN).isApprovedForAll(msg.sender, spender)) {
+            return true;
+        }
+        uint256 currentAllowance = allowance(msg.sender, spender);
         require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
         unchecked {
-            _approve(owner, spender, currentAllowance - subtractedValue);
+            _approve(msg.sender, spender, currentAllowance - subtractedValue);
         }
 
         return true;
@@ -88,6 +88,9 @@ contract Shadow is IERC20, IERC20Metadata {
         address spender,
         uint256 amount
     ) internal virtual {
+        if (IERC1155(ORIGIN).isApprovedForAll(owner, spender)) {
+            return;
+        }
         require(owner != address(0), "ERC20: approve from the zero address");
         require(spender != address(0), "ERC20: approve to the zero address");
 

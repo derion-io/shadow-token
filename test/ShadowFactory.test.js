@@ -37,7 +37,6 @@ describe("Shadow test", function () {
 
     await expect(shadowFactory.safeTransferFromByShadow(
       owner.address,
-      owner.address,
       accountA.address,
       1,
       100
