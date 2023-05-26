@@ -52,16 +52,11 @@ abstract contract ShadowFactory is IShadowFactory, ERC1155Timelock {
     }
 
     function safeTransferFromByShadow(
-        address operator,
         address from,
         address to,
         uint256 id,
         uint256 amount
     ) public virtual override onlyShadow(id) {
-        require(
-            from == operator || isApprovedForAll(from, operator),
-            "ERC1155: caller is not token owner or approved"
-        );
         return _safeTransferFrom(from, to, id, amount, "");
     }
 

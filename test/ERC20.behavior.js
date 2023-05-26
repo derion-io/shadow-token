@@ -54,11 +54,11 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
               expect(await this.token.balanceOf(to)).to.be.bignumber.equal(amount);
             });
 
-            // it('decreases the spender allowance', async function () {
-            //   await this.token.transferFrom(tokenOwner, to, amount, { from: spender });
+            it('decreases the spender allowance', async function () {
+              await this.token.transferFrom(tokenOwner, to, amount, { from: spender });
 
-            //   expect(await this.token.allowance(tokenOwner, spender)).to.be.bignumber.equal('0');
-            // });
+              expect(await this.token.allowance(tokenOwner, spender)).to.be.bignumber.equal('0');
+            });
 
             it('emits a transfer event', async function () {
               expectEvent(await this.token.transferFrom(tokenOwner, to, amount, { from: spender }), 'Transfer', {
@@ -68,13 +68,13 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
               });
             });
 
-            // it('emits an approval event', async function () {
-            //   expectEvent(await this.token.transferFrom(tokenOwner, to, amount, { from: spender }), 'Approval', {
-            //     owner: tokenOwner,
-            //     spender: spender,
-            //     value: await this.token.allowance(tokenOwner, spender),
-            //   });
-            // });
+            it('emits an approval event', async function () {
+              expectEvent(await this.token.transferFrom(tokenOwner, to, amount, { from: spender }), 'Approval', {
+                owner: tokenOwner,
+                spender: spender,
+                value: await this.token.allowance(tokenOwner, spender),
+              });
+            });
           });
 
           describe('when the token owner does not have enough balance', function () {
@@ -100,16 +100,16 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
             await this.token.approve(spender, allowance, { from: tokenOwner });
           });
 
-          // describe('when the token owner has enough balance', function () {
-          //   const amount = initialSupply;
+          describe('when the token owner has enough balance', function () {
+            const amount = initialSupply;
 
-          //   it('reverts', async function () {
-          //     await expectRevert(
-          //       this.token.transferFrom(tokenOwner, to, amount, { from: spender }),
-          //       `${errorPrefix}: insufficient allowance`,
-          //     );
-          //   });
-          // });
+            it('reverts', async function () {
+              await expectRevert(
+                this.token.transferFrom(tokenOwner, to, amount, { from: spender }),
+                `${errorPrefix}: insufficient allowance`,
+              );
+            });
+          });
 
           describe('when the token owner does not have enough balance', function () {
             const amount = allowance;
@@ -167,7 +167,7 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
       const to = recipient;
 
       it('reverts', async function () {
-        await expectRevert(this.token.transferFrom(tokenOwner, to, amount, { from: spender }), 'ERC1155: caller is not token owner or approved');
+        await expectRevert(this.token.transferFrom(tokenOwner, to, amount, { from: spender }), 'ERC20: approve from the zero address');
       });
     });
   });
@@ -244,24 +244,24 @@ function shouldBehaveLikeERC20Approve(errorPrefix, owner, spender, supply, appro
       const amount = supply;
 
       it('emits an approval event', async function () {
-        // expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
-        //   owner: owner,
-        //   spender: spender,
-        //   value: amount,
-        // });
         expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
           owner: owner,
           spender: spender,
-          value: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          value: amount,
         });
+        // expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
+        //   owner: owner,
+        //   spender: spender,
+        //   value: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+        // });
       });
 
       describe('when there was no approved amount before', function () {
         it('approves the requested amount', async function () {
           await approve.call(this, owner, spender, amount);
 
-          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
-          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
+          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
         });
       });
 
@@ -273,8 +273,8 @@ function shouldBehaveLikeERC20Approve(errorPrefix, owner, spender, supply, appro
         it('approves the requested amount and replaces the previous one', async function () {
           await approve.call(this, owner, spender, amount);
 
-          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
-          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
+          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
         });
       });
     });
@@ -283,24 +283,24 @@ function shouldBehaveLikeERC20Approve(errorPrefix, owner, spender, supply, appro
       const amount = supply.addn(1);
 
       it('emits an approval event', async function () {
-        // expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
-        //   owner: owner,
-        //   spender: spender,
-        //   value: amount,
-        // });
         expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
           owner: owner,
           spender: spender,
-          value: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          value: amount,
         });
+        // expectEvent(await approve.call(this, owner, spender, amount), 'Approval', {
+        //   owner: owner,
+        //   spender: spender,
+        //   value: '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+        // });
       });
 
       describe('when there was no approved amount before', function () {
         it('approves the requested amount', async function () {
           await approve.call(this, owner, spender, amount);
 
-          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
-          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
+          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
         });
       });
 
@@ -312,8 +312,8 @@ function shouldBehaveLikeERC20Approve(errorPrefix, owner, spender, supply, appro
         it('approves the requested amount and replaces the previous one', async function () {
           await approve.call(this, owner, spender, amount);
 
-          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
-          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+          expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal(amount);
+          // expect(await this.token.allowance(owner, spender)).to.be.bignumber.equal('115792089237316195423570985008687907853269984665640564039457584007913129639935');
         });
       });
     });

@@ -9,7 +9,6 @@ interface IShadowFactory {
     function getShadowDecimals(uint id) external view returns (uint8);
     function setApprovalForAllByShadow(uint id, address owner, address operator, bool approved) external;
     function safeTransferFromByShadow(
-        address operator,
         address from,
         address to,
         uint256 id,
