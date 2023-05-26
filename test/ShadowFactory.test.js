@@ -75,7 +75,6 @@ describe("Shadow test", function () {
       const {shadow, shadowFactory, accountA, owner} = await loadFixture(fixture)
       const erc20Balance = await shadow.balanceOf(owner.address)
       const erc1155Balance = await shadowFactory.balanceOf(owner.address, 1)
-      console.log(erc20Balance, erc1155Balance)
       expect(erc20Balance).to.be.equal(erc1155Balance)
     })
     it("Transfer success from ERC20", async function () {
