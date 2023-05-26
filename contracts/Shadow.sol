@@ -47,7 +47,7 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function approve(address spender, uint amount) public virtual override returns (bool) {
-        if (allowance(msg.sender, spender) != type(uint256).max) {
+        if (!IERC1155(ORIGIN).isApprovedForAll(msg.sender, spender)) {
             _approve(msg.sender, spender, amount);
         }
         return true;
@@ -67,20 +67,15 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
-        if (allowance(msg.sender, spender) != type(uint256).max) {
-            _approve(msg.sender, spender, allowance(msg.sender, spender) + addedValue);
+        uint256 currentAllowance = allowance(msg.sender, spender);
+        if (currentAllowance != type(uint256).max) {
+            _approve(msg.sender, spender, currentAllowance + addedValue);
         }
         return true;
     }
 
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        uint256 currentAllowance = allowance(msg.sender, spender);
-        if (allowance(msg.sender, spender) != type(uint256).max) {
-            require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
-            unchecked {
-                _approve(msg.sender, spender, currentAllowance - subtractedValue);
-            }
-        }
+        _spendAllowance(msg.sender, spender, subtractedValue);
         return true;
     }
 

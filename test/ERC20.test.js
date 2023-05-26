@@ -59,7 +59,7 @@ contract('ERC20', function (accounts) {
         //   it('reverts', async function () {
         //     await expectRevert(
         //       this.token.decreaseAllowance(spender, amount, { from: initialHolder }),
-        //       'ERC20: decreased allowance below zero',
+        //       'ERC20: insufficient allowance',
         //     );
         //   });
         // });
@@ -93,7 +93,7 @@ contract('ERC20', function (accounts) {
           it('reverts when more than the full allowance is removed', async function () {
             await expectRevert(
               this.token.decreaseAllowance(spender, approvedAmount.addn(1), { from: initialHolder }),
-              'ERC20: decreased allowance below zero',
+              'ERC20: insufficient allowance',
             );
           });
         });
@@ -119,7 +119,7 @@ contract('ERC20', function (accounts) {
       it('reverts', async function () {
         await expectRevert(
           this.token.decreaseAllowance(spender, amount, { from: initialHolder }),
-          'ERC20: decreased allowance below zero',
+          'ERC20: insufficient allowance',
         );
       });
     });
