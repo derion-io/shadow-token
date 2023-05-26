@@ -13,14 +13,7 @@
     "deploy:ganache": "npx hardhat run scripts/AllContracts.ganacheDeploy.js --network ganache"
   },
   "dependencies": {
-    "@atixlabs/hardhat-time-n-mine": "^0.0.5",
-    "@derivable/erc1155-timelock": "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git",
-    "@derivable/utr": "git+ssh://git@github.com:derivable-labs/utr.git",
-    "bignumber.js": "^9.1.1",
-    "bn.js": "^5.2.1",
-    "canonical-weth": "^1.4.0",
-    "csv-parser": "^3.0.0",
-    "dotenv": "^16.0.1"
+    "@derivable/erc1155-timelock": "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
