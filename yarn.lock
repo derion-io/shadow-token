@@ -105,7 +105,7 @@
 
 "@derivable/erc1155-timelock@git+ssh://git@github.com:derivable-labs/erc1155-timelock.git":
   version "4.8.2"
-  resolved "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#b302210c38ec7341f6eb2b9ffbf99400296190e2"
+  resolved "git+ssh://git@github.com:derivable-labs/erc1155-timelock.git#13917450eed89caae296c534fc0775e71bd5f32a"
 
 "@ensdomains/address-encoder@^0.1.7":
   version "0.1.9"
