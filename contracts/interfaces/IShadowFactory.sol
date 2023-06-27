@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-interface IShadowFactory {
+import "./IERC1155Supply.sol";
+
+interface IShadowFactory is IERC1155Supply {
     function deployingID() external view returns (uint);
     function computeShadowAddress(uint id) external view returns (address);
     function getShadowName(uint id) external view returns (string memory);

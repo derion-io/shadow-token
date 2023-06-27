@@ -5,6 +5,7 @@
 pragma solidity ^0.8.0;
 
 import "@derivable/erc1155-maturity/contracts/token/ERC1155/ERC1155Maturity.sol";
+import "./interfaces/IERC1155Supply.sol";
 
 /**
  * @dev Extension of ERC1155 that adds tracking of total supply per id.
@@ -14,7 +15,7 @@ import "@derivable/erc1155-maturity/contracts/token/ERC1155/ERC1155Maturity.sol"
  * corresponding is an NFT, there is no guarantees that no other token with the
  * same id are not going to be minted.
  */
-contract ERC1155Supply is ERC1155Maturity {
+contract ERC1155Supply is IERC1155Supply, ERC1155Maturity {
     mapping(uint256 => uint256) internal _totalSupply;
 
     constructor(string memory uri) ERC1155Maturity(uri) {}
@@ -22,14 +23,14 @@ contract ERC1155Supply is ERC1155Maturity {
     /**
      * @dev Total amount of tokens in with a given id.
      */
-    function totalSupply(uint256 id) public view virtual returns (uint256) {
+    function totalSupply(uint256 id) public view override virtual returns (uint256) {
         return _totalSupply[id];
     }
 
     /**
      * @dev Indicates whether any token exist with a given id, or not.
      */
-    function exists(uint256 id) public view virtual returns (bool) {
+    function exists(uint256 id) public view override virtual returns (bool) {
         return totalSupply(id) > 0;
     }
 

@@ -105,7 +105,7 @@
 
 "@derivable/erc1155-maturity@git+ssh://git@github.com:derivable-labs/erc1155-maturity.git":
   version "4.8.2"
-  resolved "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#d1594ba568797a23b2998253db3d2be8107b81d5"
+  resolved "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#82536b70ea2e2473dac871959409d05941e88fd5"
 
 "@ensdomains/address-encoder@^0.1.7":
   version "0.1.9"
