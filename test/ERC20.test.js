@@ -8,7 +8,7 @@ const {
   shouldBehaveLikeERC20Approve,
 } = require('./ERC20.behavior');
 
-const ShadowFactory = artifacts.require('ShadowFactoryTest')
+const ShadowFactory = artifacts.require('ShadowFactoryMintable')
 const Shadow = artifacts.require("Shadow")
 
 contract('ERC20', function (accounts) {

@@ -14,7 +14,7 @@ describe("Shadow test", function () {
   async function fixture() {
     const [owner, accountA, accountB] = await ethers.getSigners();
 
-    const ShadowFactory = await ethers.getContractFactory('ShadowFactoryTest')
+    const ShadowFactory = await ethers.getContractFactory('ShadowFactoryMintable')
     const shadowFactory = await ShadowFactory.deploy()
     await shadowFactory.deployed()
 

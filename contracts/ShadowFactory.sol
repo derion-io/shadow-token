@@ -2,17 +2,19 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Create2.sol";
-import "@derivable/erc1155-timelock/contracts/token/ERC1155/ERC1155Timelock.sol";
 
+import "./ERC1155Supply.sol";
 import "./Shadow.sol";
 import "./interfaces/IShadowFactory.sol";
 
 
-abstract contract ShadowFactory is IShadowFactory, ERC1155Timelock {
+contract ShadowFactory is IShadowFactory, ERC1155Supply {
     bytes32 immutable public BYTECODE_HASH = keccak256(type(Shadow).creationCode);
 
     // transient storage
     uint public deployingID;
+
+    constructor(string memory uri) ERC1155Supply(uri) {}
 
     function deployShadow(uint id) external returns (address shadowToken) {
         deployingID = id;
