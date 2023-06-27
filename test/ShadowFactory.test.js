@@ -97,7 +97,7 @@ describe("Shadow test", function () {
         1, 
         erc20BalanceBefore.add(1).toString(),
         0x0
-      )).to.be.revertedWith('Timelock: insufficient balance')
+      )).to.be.revertedWith('Maturity: insufficient balance')
     })
     it("Transfer to contract", async function () {
       const {shadow, shadowFactory, helper, owner} = await loadFixture(fixture)
