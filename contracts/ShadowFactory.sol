@@ -6,24 +6,23 @@ import "@openzeppelin/contracts/utils/Create2.sol";
 import "./ERC1155Supply.sol";
 import "./Shadow.sol";
 import "./interfaces/IShadowFactory.sol";
-
+import "./MetaProxy.sol";
 
 contract ShadowFactory is IShadowFactory, ERC1155Supply {
-    bytes32 immutable public BYTECODE_HASH = keccak256(type(Shadow).creationCode);
+    address immutable internal CODE;
 
-    // transient storage
-    uint public deployingID;
-
-    constructor(string memory uri) ERC1155Supply(uri) {}
+    constructor(string memory uri) ERC1155Supply(uri) {
+        CODE = address(new Shadow{salt: 0}(address(this)));
+    }
 
     function deployShadow(uint id) external returns (address shadowToken) {
-        deployingID = id;
-        shadowToken = Create2.deploy(0, bytes32(id), type(Shadow).creationCode);
-        delete deployingID;
+        shadowToken = MetaProxy.deploy(CODE, id);
+        require(shadowToken != address(0), "ShadowFactory: Failed on deploy");
     }
 
     function computeShadowAddress(uint id) public view override returns (address pool) {
-        return Create2.computeAddress(bytes32(id), BYTECODE_HASH, address(this));
+        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(CODE, id);
+        return Create2.computeAddress(0, bytecodeHash, address(this));
     }
 
     function getShadowName(uint) public view virtual returns (string memory) {
