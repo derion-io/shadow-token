@@ -17,6 +17,7 @@ contract ShadowFactory is IShadowFactory, ERC1155Supply {
 
     function deployShadow(uint id) external returns (address shadowToken) {
         shadowToken = MetaProxy.deploy(CODE, id);
+        require(shadowToken != address(0), "ShadowFactory: Failed on deploy");
     }
 
     function computeShadowAddress(uint id) public view override returns (address pool) {

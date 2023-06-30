@@ -4,11 +4,9 @@ chai.use(solidity)
 
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
+const { MaxUint256 } = ethers.constants
+
 const bn = ethers.BigNumber.from
-// const { ethers } = require("hardhat");
-
-const MAX_INT = bn('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-
 
 describe("Shadow", function () {
   async function fixture() {
@@ -19,24 +17,36 @@ describe("Shadow", function () {
     await shadowFactory.deployed()
     // shadowFactory = await ethers.getContractAt('IShadowFactoryMintable', shadowFactory.address, owner)
 
+    await shadowFactory.deployShadow(MaxUint256)
+    await shadowFactory.deployShadow(0)
     await shadowFactory.deployShadow(1)
-    const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)
+    const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(0), owner)
+    const shadow1 = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)
 
     const FakeShadow = await ethers.getContractFactory('FakeShadow')
     const fakeShadow = await FakeShadow.deploy(shadowFactory.address, 1)
     await fakeShadow.deployed()
-    
-    await shadowFactory.mint(owner.address, 1, 1000000, 0x0)
+
+    await shadowFactory.mint(owner.address, 0, 1000000, 0x0)
+    await shadowFactory.mint(owner.address, 1, 1000000000000, 0x0)
 
     return {
       owner,
       accountA,
       accountB,
       shadow,
+      shadow1,
       shadowFactory,
       fakeShadow
     }
   }
+
+  it ("Shadow deployment", async function() {
+    const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
+    await expect(shadowFactory.deployShadow(0), 'redeploy').revertedWith('Failed on deploy')
+
+    await shadowFactory.deployShadow(13)
+  })
 
   it("Only shadow can call safeTransferFromByShadow", async function() {
     const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
@@ -59,7 +69,7 @@ describe("Shadow", function () {
     it("Should balance exact same between ERC20 and ERC1155", async function() {
       const {shadow, shadowFactory, accountA, owner} = await loadFixture(fixture)
       const erc20Balance = await shadow.balanceOf(owner.address)
-      const erc1155Balance = await shadowFactory.balanceOf(owner.address, 1)
+      const erc1155Balance = await shadowFactory.balanceOf(owner.address, 0)
       expect(erc20Balance).to.be.equal(erc1155Balance)
     })
     it("Transfer success from ERC20", async function () {
@@ -79,7 +89,7 @@ describe("Shadow", function () {
       await expect(shadowFactory.safeTransferFrom(
         owner.address, 
         accountA.address, 
-        1, 
+        0, 
         erc20BalanceBefore.add(1).toString(),
         0x0
       )).to.be.revertedWith('Maturity: insufficient balance')
@@ -90,7 +100,7 @@ describe("Shadow", function () {
       await expect(shadowFactory.safeTransferFrom(
         owner.address, 
         fakeShadow.address, 
-        1, 
+        0, 
         '100',
         0x0
       )).to.be.revertedWith('ERC1155: transfer to non-ERC1155Receiver implementer')
@@ -112,7 +122,7 @@ describe("Shadow", function () {
       const {shadow, shadowFactory, owner, accountA} = await loadFixture(fixture)
       await shadowFactory.setApprovalForAll(accountA.address, '100');    
       const shadowAllowance = await shadow.allowance(owner.address, accountA.address)
-      expect(shadowAllowance).to.be.equal(MAX_INT)
+      expect(shadowAllowance).to.be.equal(MaxUint256)
     })
   })
 })
