@@ -15,8 +15,9 @@ describe("Shadow test", function () {
     const [owner, accountA, accountB] = await ethers.getSigners();
 
     const ShadowFactory = await ethers.getContractFactory('ShadowFactoryMintable')
-    const shadowFactory = await ShadowFactory.deploy()
+    let shadowFactory = await ShadowFactory.deploy()
     await shadowFactory.deployed()
+    shadowFactory = await ethers.getContractAt('IShadowFactoryMintable', shadowFactory.address, owner)
 
     await shadowFactory.deployShadow(1)
     const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)

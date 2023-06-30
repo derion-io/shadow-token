@@ -10,33 +10,40 @@ import "./interfaces/IShadowFactory.sol";
 
 contract Shadow is IERC20, IERC20Metadata {
     address public immutable ORIGIN;
-    uint public immutable ID;
 
     mapping(address => mapping(address => uint256)) private s_allowances;
 
     constructor() {
-        ORIGIN = msg.sender;
-        ID = IShadowFactory(msg.sender).deployingID();
+        ORIGIN = address(this);
+    }
+
+    /// @notice Returns the metadata of this (MetaProxy) contract.
+    /// Only relevant with contracts created via the MetaProxy standard.
+    /// @dev This function is aimed to be invoked with- & without a call.
+    function ID() public pure returns (uint id) {
+        assembly {
+            id := calldataload(sub(calldatasize(), 32))
+        }
     }
 
     function name() public view virtual override returns (string memory) {
-        return IShadowFactory(ORIGIN).getShadowName(ID);
+        return IShadowFactory(ORIGIN).getShadowName(ID());
     }
 
     function symbol() public view virtual override returns (string memory) {
-        return IShadowFactory(ORIGIN).getShadowSymbol(ID);
+        return IShadowFactory(ORIGIN).getShadowSymbol(ID());
     }
 
     function decimals() public view virtual override returns (uint8) {
-        return IShadowFactory(ORIGIN).getShadowDecimals(ID);
+        return IShadowFactory(ORIGIN).getShadowDecimals(ID());
     }
 
     function totalSupply() public view override returns (uint256) {
-        return IERC1155Supply(ORIGIN).totalSupply(ID);
+        return IERC1155Supply(ORIGIN).totalSupply(ID());
     }
 
     function balanceOf(address account) public view override returns (uint256) {
-        return IERC1155(ORIGIN).balanceOf(account, ID);
+        return IERC1155(ORIGIN).balanceOf(account, ID());
     }
 
     function allowance(address owner, address spender) public view virtual override returns (uint256) {
@@ -54,14 +61,14 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, to, ID, amount);
+        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, to, ID(), amount);
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
         _spendAllowance(from, msg.sender, amount);
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID, amount);
+        IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID(), amount);
         emit Transfer(from, to, amount);
         return true;
     }
