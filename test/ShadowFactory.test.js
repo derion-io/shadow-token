@@ -22,9 +22,9 @@ describe("Shadow test", function () {
     await shadowFactory.deployShadow(1)
     const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)
 
-    const Helper = await ethers.getContractFactory('Helper')
-    const helper = await Helper.deploy(shadowFactory.address, 1)
-    await helper.deployed()
+    const FakeShadow = await ethers.getContractFactory('FakeShadow')
+    const fakeShadow = await FakeShadow.deploy(shadowFactory.address, 1)
+    await fakeShadow.deployed()
     
     await shadowFactory.mint(owner.address, 1, 1000000, 0x0)
 
@@ -34,12 +34,12 @@ describe("Shadow test", function () {
       accountB,
       shadow,
       shadowFactory,
-      helper
+      fakeShadow
     }
   }
 
   it("Only shadow can call safeTransferFromByShadow", async function() {
-    const {owner, accountA, shadowFactory, helper} = await loadFixture(fixture)
+    const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
 
     await expect(shadowFactory.safeTransferFromByShadow(
       owner.address,
@@ -48,7 +48,7 @@ describe("Shadow test", function () {
       100
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
 
-    await expect(helper.transferFrom(
+    await expect(fakeShadow.transferFrom(
       owner.address,
       accountA.address,
       100
@@ -85,18 +85,18 @@ describe("Shadow test", function () {
       )).to.be.revertedWith('Maturity: insufficient balance')
     })
     it("Transfer to contract", async function () {
-      const {shadow, shadowFactory, helper, owner} = await loadFixture(fixture)
-      await shadow.transfer(helper.address, '100');
+      const {shadow, shadowFactory, fakeShadow, owner} = await loadFixture(fixture)
+      await shadow.transfer(fakeShadow.address, '100');
       await expect(shadowFactory.safeTransferFrom(
         owner.address, 
-        helper.address, 
+        fakeShadow.address, 
         1, 
         '100',
         0x0
       )).to.be.revertedWith('ERC1155: transfer to non-ERC1155Receiver implementer')
     })
     it("Approve 1155 and use 20 to transfer", async function () {
-      const {shadow, shadowFactory, helper, owner, accountA, accountB} = await loadFixture(fixture)
+      const {shadow, shadowFactory, owner, accountA, accountB} = await loadFixture(fixture)
       await shadowFactory.setApprovalForAll(accountA.address, '100');
       const balanceOwnerBefore = await shadow.balanceOf(owner.address)
       const balanceBBefore = await shadow.balanceOf(accountB.address)
@@ -109,7 +109,7 @@ describe("Shadow test", function () {
     })
 
     it("Approve 1155 and allowance 20 should be max", async function () {
-      const {shadow, shadowFactory, helper, owner, accountA, accountB} = await loadFixture(fixture)
+      const {shadow, shadowFactory, owner, accountA} = await loadFixture(fixture)
       await shadowFactory.setApprovalForAll(accountA.address, '100');    
       const shadowAllowance = await shadow.allowance(owner.address, accountA.address)
       expect(shadowAllowance).to.be.equal(MAX_INT)

@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "../interfaces/IShadowFactory.sol";
 
-contract Helper {
+contract FakeShadow {
     address public immutable ORIGIN;
     uint public immutable ID;
 
