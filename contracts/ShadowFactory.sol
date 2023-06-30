@@ -9,18 +9,18 @@ import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
 contract ShadowFactory is IShadowFactory, ERC1155Supply {
-    address immutable internal ORIGIN;
+    address immutable internal CODE;
 
     constructor(string memory uri) ERC1155Supply(uri) {
-        ORIGIN = address(new Shadow{salt: 0}(address(this)));
+        CODE = address(new Shadow{salt: 0}(address(this)));
     }
 
     function deployShadow(uint id) external returns (address shadowToken) {
-        shadowToken = MetaProxy.deploy(ORIGIN, id);
+        shadowToken = MetaProxy.deploy(CODE, id);
     }
 
     function computeShadowAddress(uint id) public view override returns (address pool) {
-        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(ORIGIN, id);
+        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(CODE, id);
         return Create2.computeAddress(0, bytecodeHash, address(this));
     }
 
