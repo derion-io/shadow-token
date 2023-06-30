@@ -44,15 +44,6 @@ contract ShadowFactory is IShadowFactory, ERC1155Supply {
         _;
     }
 
-    function setApprovalForAllByShadow(
-        uint id,
-        address owner,
-        address operator,
-        bool approved
-    ) public virtual override onlyShadow(id) {
-        _setApprovalForAll(owner, operator, approved);
-    }
-
     function safeTransferFromByShadow(
         address from,
         address to,

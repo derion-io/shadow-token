@@ -12,10 +12,6 @@ contract Helper {
         ID = id;
     }
 
-    function approve(address spender, uint amount) public {
-        IShadowFactory(ORIGIN).setApprovalForAllByShadow(ID, msg.sender, spender, amount > 0);
-    }
-
     function transferFrom(address from, address to, uint256 amount) public {
         IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID, amount);
     }

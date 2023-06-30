@@ -54,22 +54,6 @@ describe("Shadow test", function () {
     )).to.be.revertedWith('Shadow: UNAUTHORIZED')
   })
 
-  it("Only shadow can call setApprovalForAllByShadow", async function() {
-    const {owner, accountA, shadowFactory, helper} = await loadFixture(fixture)
-
-    await expect(shadowFactory.setApprovalForAllByShadow(
-      1,
-      owner.address,
-      owner.address,
-      accountA.address
-    )).to.be.revertedWith('Shadow: UNAUTHORIZED')
-
-    await expect(helper.approve(
-      accountA.address,
-      100
-    )).to.be.revertedWith('Shadow: UNAUTHORIZED')
-  })
-
   describe("Transfer", function () {
     it("Should balance exact same between ERC20 and ERC1155", async function() {
       const {shadow, shadowFactory, accountA, owner} = await loadFixture(fixture)
