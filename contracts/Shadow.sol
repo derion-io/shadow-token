@@ -13,8 +13,8 @@ contract Shadow is IERC20, IERC20Metadata {
 
     mapping(address => mapping(address => uint256)) private s_allowances;
 
-    constructor() {
-        ORIGIN = address(this);
+    constructor(address origin) {
+        ORIGIN = origin;
     }
 
     /// @notice Returns the metadata of this (MetaProxy) contract.

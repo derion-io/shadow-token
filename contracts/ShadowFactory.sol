@@ -9,7 +9,7 @@ import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
 contract ShadowFactory is IShadowFactory, Shadow, ERC1155Supply {
-    constructor(string memory uri) ERC1155Supply(uri) {}
+    constructor(string memory uri) Shadow(address(this)) ERC1155Supply(uri) {}
 
     function deployShadow(uint id) external returns (address shadowToken) {
         shadowToken = MetaProxy.deploy(address(this), id);
