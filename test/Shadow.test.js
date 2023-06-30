@@ -10,7 +10,7 @@ const bn = ethers.BigNumber.from
 const MAX_INT = bn('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
 
 
-describe("Shadow test", function () {
+describe("Shadow", function () {
   async function fixture() {
     const [owner, accountA, accountB] = await ethers.getSigners();
 
