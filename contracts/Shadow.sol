@@ -9,12 +9,12 @@ import "./interfaces/IERC1155Supply.sol";
 import "./interfaces/IShadowFactory.sol";
 
 contract Shadow is IERC20, IERC20Metadata {
-    address public immutable ORIGIN;
+    address public immutable FACTORY;
 
     mapping(address => mapping(address => uint256)) private s_allowances;
 
-    constructor(address origin) {
-        ORIGIN = origin;
+    constructor(address factory) {
+        FACTORY = factory;
     }
 
     /// @notice Returns the metadata of this (MetaProxy) contract.
@@ -27,48 +27,48 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function name() public view virtual override returns (string memory) {
-        return IShadowFactory(ORIGIN).getShadowName(ID());
+        return IShadowFactory(FACTORY).getShadowName(ID());
     }
 
     function symbol() public view virtual override returns (string memory) {
-        return IShadowFactory(ORIGIN).getShadowSymbol(ID());
+        return IShadowFactory(FACTORY).getShadowSymbol(ID());
     }
 
     function decimals() public view virtual override returns (uint8) {
-        return IShadowFactory(ORIGIN).getShadowDecimals(ID());
+        return IShadowFactory(FACTORY).getShadowDecimals(ID());
     }
 
     function totalSupply() public view override returns (uint256) {
-        return IERC1155Supply(ORIGIN).totalSupply(ID());
+        return IERC1155Supply(FACTORY).totalSupply(ID());
     }
 
     function balanceOf(address account) public view override returns (uint256) {
-        return IERC1155(ORIGIN).balanceOf(account, ID());
+        return IERC1155(FACTORY).balanceOf(account, ID());
     }
 
     function allowance(address owner, address spender) public view virtual override returns (uint256) {
-        if (IERC1155(ORIGIN).isApprovedForAll(owner, spender)) {
+        if (IERC1155(FACTORY).isApprovedForAll(owner, spender)) {
             return type(uint256).max;
         }
         return s_allowances[owner][spender];
     }
 
     function approve(address spender, uint amount) public virtual override returns (bool) {
-        if (!IERC1155(ORIGIN).isApprovedForAll(msg.sender, spender)) {
+        if (!IERC1155(FACTORY).isApprovedForAll(msg.sender, spender)) {
             _approve(msg.sender, spender, amount);
         }
         return true;
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(msg.sender, to, ID(), amount);
+        IShadowFactory(FACTORY).safeTransferFromByShadow(msg.sender, to, ID(), amount);
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
         _spendAllowance(from, msg.sender, amount);
-        IShadowFactory(ORIGIN).safeTransferFromByShadow(from, to, ID(), amount);
+        IShadowFactory(FACTORY).safeTransferFromByShadow(from, to, ID(), amount);
         emit Transfer(from, to, amount);
         return true;
     }

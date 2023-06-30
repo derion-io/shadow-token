@@ -8,15 +8,19 @@ import "./Shadow.sol";
 import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
-contract ShadowFactory is IShadowFactory, Shadow, ERC1155Supply {
-    constructor(string memory uri) Shadow(address(this)) ERC1155Supply(uri) {}
+contract ShadowFactory is IShadowFactory, ERC1155Supply {
+    address immutable internal ORIGIN;
+
+    constructor(string memory uri) ERC1155Supply(uri) {
+        ORIGIN = address(new Shadow{salt: 0}(address(this)));
+    }
 
     function deployShadow(uint id) external returns (address shadowToken) {
-        shadowToken = MetaProxy.deploy(address(this), id);
+        shadowToken = MetaProxy.deploy(ORIGIN, id);
     }
 
     function computeShadowAddress(uint id) public view override returns (address pool) {
-        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(address(this), id);
+        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(ORIGIN, id);
         return Create2.computeAddress(0, bytecodeHash, address(this));
     }
 

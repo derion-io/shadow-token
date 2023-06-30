@@ -17,7 +17,7 @@ describe("Shadow test", function () {
     const ShadowFactory = await ethers.getContractFactory('ShadowFactoryMintable')
     let shadowFactory = await ShadowFactory.deploy()
     await shadowFactory.deployed()
-    shadowFactory = await ethers.getContractAt('IShadowFactoryMintable', shadowFactory.address, owner)
+    // shadowFactory = await ethers.getContractAt('IShadowFactoryMintable', shadowFactory.address, owner)
 
     await shadowFactory.deployShadow(1)
     const shadow = await ethers.getContractAt('Shadow', await shadowFactory.computeShadowAddress(1), owner)
