@@ -2,16 +2,16 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Create2.sol";
+import "@derivable/erc1155-maturity/contracts/token/ERC1155/ERC1155Maturity.sol";
 
-import "./ERC1155Supply.sol";
 import "./Shadow.sol";
 import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
-contract ShadowFactory is IShadowFactory, ERC1155Supply {
+contract ShadowFactory is IShadowFactory, ERC1155Maturity {
     address immutable internal CODE;
 
-    constructor(string memory uri) ERC1155Supply(uri) {
+    constructor(string memory uri) ERC1155Maturity(uri) {
         CODE = address(new Shadow{salt: 0}(address(this)));
     }
 
