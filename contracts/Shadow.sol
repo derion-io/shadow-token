@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import "@derivable/erc1155-maturity/contracts/token/ERC1155/IERC1155Maturity.sol";
 
-import "./interfaces/IERC1155Supply.sol";
 import "./interfaces/IShadowFactory.sol";
 
 contract Shadow is IERC20, IERC20Metadata {
@@ -39,7 +39,7 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function totalSupply() public view override returns (uint256) {
-        return IERC1155Supply(FACTORY).totalSupply(ID());
+        return IERC1155Maturity(FACTORY).totalSupply(ID());
     }
 
     function balanceOf(address account) public view override returns (uint256) {
@@ -61,12 +61,14 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
+        require(to != address(0), "ERC20: transfer to the zero address");
         IShadowFactory(FACTORY).safeTransferFromByShadow(msg.sender, to, ID(), amount);
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+        require(to != address(0), "ERC20: transfer to the zero address");
         _spendAllowance(from, msg.sender, amount);
         IShadowFactory(FACTORY).safeTransferFromByShadow(from, to, ID(), amount);
         emit Transfer(from, to, amount);

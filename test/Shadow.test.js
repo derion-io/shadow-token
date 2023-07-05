@@ -103,7 +103,7 @@ describe("Shadow", function () {
         0, 
         '100',
         0x0
-      )).to.be.revertedWith('ERC1155: transfer to non-ERC1155Receiver implementer')
+      )).to.be.revertedWith('NON_RECEIVER')
     })
     it("Approve 1155 and use 20 to transfer", async function () {
       const {shadow, shadowFactory, owner, accountA, accountB} = await loadFixture(fixture)
