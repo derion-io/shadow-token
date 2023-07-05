@@ -103,9 +103,9 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@derivable/erc1155-maturity@git+ssh://git@github.com:derivable-labs/erc1155-maturity.git":
+"@derivable/erc1155-maturity@git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#dev":
   version "4.8.2"
-  resolved "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#1640a5c4770718a5c512cb936032c715fef1c9c8"
+  resolved "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#da578874108c03f3ee09ef8cc1134aa8f21f729f"
 
 "@ensdomains/address-encoder@^0.1.7":
   version "0.1.9"

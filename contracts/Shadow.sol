@@ -61,12 +61,14 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
+        require(to != address(0), "ERC20: transfer to the zero address");
         IShadowFactory(FACTORY).safeTransferFromByShadow(msg.sender, to, ID(), amount);
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+        require(to != address(0), "ERC20: transfer to the zero address");
         _spendAllowance(from, msg.sender, amount);
         IShadowFactory(FACTORY).safeTransferFromByShadow(from, to, ID(), amount);
         emit Transfer(from, to, amount);
