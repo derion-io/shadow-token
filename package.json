@@ -13,7 +13,7 @@
     "deploy:ganache": "npx hardhat run scripts/AllContracts.ganacheDeploy.js --network ganache"
   },
   "dependencies": {
-    "@derivable/erc1155-maturity": "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git#dev"
+    "@derivable/erc1155-maturity": "git+ssh://git@github.com:derivable-labs/erc1155-maturity.git"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
