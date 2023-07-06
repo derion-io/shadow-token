@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import "@derivable/erc1155-maturity/contracts/token/ERC1155/IERC1155Maturity.sol";
+import "@derivable/erc1155-maturity/contracts/token/ERC1155/IERC1155Supply.sol";
 
 import "./interfaces/IShadowFactory.sol";
 
@@ -39,7 +39,7 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function totalSupply() public view override returns (uint256) {
-        return IERC1155Maturity(FACTORY).totalSupply(ID());
+        return IERC1155Supply(FACTORY).totalSupply(ID());
     }
 
     function balanceOf(address account) public view override returns (uint256) {
