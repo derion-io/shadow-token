@@ -84,7 +84,12 @@ contract Shadow is IERC20, IERC20Metadata {
     }
 
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
-        _spendAllowance(msg.sender, spender, subtractedValue);
+        uint256 currentAllowance = allowance(msg.sender, spender);
+        require(currentAllowance >= subtractedValue, "ERC20: insufficient allowance");
+        unchecked {
+            _approve(msg.sender, spender, currentAllowance - subtractedValue);
+        }
+
         return true;
     }
 
