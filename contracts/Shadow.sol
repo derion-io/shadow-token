@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -14,13 +14,14 @@ contract Shadow is IERC20, IERC20Metadata {
     mapping(address => mapping(address => uint256)) private s_allowances;
 
     constructor(address factory) {
+        require(factory != address(0), "Shadow: Address Zero");
         FACTORY = factory;
     }
 
     /// @notice Returns the metadata of this (MetaProxy) contract.
     /// Only relevant with contracts created via the MetaProxy standard.
     /// @dev This function is aimed to be invoked with- & without a call.
-    function ID() public pure returns (uint id) {
+    function ID() public pure returns (uint256 id) {
         assembly {
             id := calldataload(sub(calldatasize(), 32))
         }
@@ -53,7 +54,7 @@ contract Shadow is IERC20, IERC20Metadata {
         return s_allowances[owner][spender];
     }
 
-    function approve(address spender, uint amount) public virtual override returns (bool) {
+    function approve(address spender, uint256 amount) public virtual override returns (bool) {
         if (!IERC1155(FACTORY).isApprovedForAll(msg.sender, spender)) {
             _approve(msg.sender, spender, amount);
         }

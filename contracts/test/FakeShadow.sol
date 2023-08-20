@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0;
 
 import "../interfaces/IShadowFactory.sol";
 
 contract FakeShadow {
     address public immutable ORIGIN;
-    uint public immutable ID;
+    uint256 public immutable ID;
 
-    constructor(address origin, uint id) {
+    constructor(address origin, uint256 id) {
         ORIGIN = origin;
         ID = id;
     }

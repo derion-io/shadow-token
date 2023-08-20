@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0;
 
 library MetaProxy {
-  function computeBytecodeHash(address targetContract, uint metadata) internal pure returns (bytes32 bytecodeHash) {
+  function computeBytecodeHash(address targetContract, uint256 metadata) internal pure returns (bytes32 bytecodeHash) {
     // the following assembly code (init code + contract code) constructs a metaproxy.
     assembly {
       // load free memory pointer as per solidity convention
@@ -34,7 +34,7 @@ library MetaProxy {
 
   /// @dev Creates a new proxy for `targetContract` with metadata from memory starting at `offset` and `length` bytes.
   /// @return addr A non-zero address if successful.
-  function deploy (address targetContract, uint metadata) internal returns (address addr) {
+  function deploy (address targetContract, uint256 metadata) internal returns (address addr) {
     // the following assembly code (init code + contract code) constructs a metaproxy.
     assembly {
       // load free memory pointer as per solidity convention
