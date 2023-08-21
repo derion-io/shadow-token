@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity >=0.8.0;
+pragma solidity 0.8.20;
 
 library MetaProxy {
   function computeBytecodeHash(address targetContract, uint256 metadata) internal pure returns (bytes32 bytecodeHash) {
