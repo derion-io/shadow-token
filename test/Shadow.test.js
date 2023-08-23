@@ -4,7 +4,7 @@ chai.use(solidity)
 
 const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { expect } = require("chai");
-const { MaxUint256 } = ethers.constants
+const { MaxUint256, AddressZero } = ethers.constants
 
 const bn = ethers.BigNumber.from
 
@@ -44,8 +44,9 @@ describe("Shadow", function () {
   it ("Shadow deployment", async function() {
     const {owner, accountA, shadowFactory, fakeShadow} = await loadFixture(fixture)
     await expect(shadowFactory.deployShadow(0), 'redeploy').revertedWith('Failed on deploy')
-
     await shadowFactory.deployShadow(13)
+    const Shadow = await ethers.getContractFactory('Shadow')
+    await expect(Shadow.deploy(AddressZero)).revertedWith('Shadow: Address Zero')
   })
 
   it("Only shadow can call safeTransferFromByShadow", async function() {
@@ -108,6 +109,8 @@ describe("Shadow", function () {
     it("Approve 1155 and use 20 to transfer", async function () {
       const {shadow, shadowFactory, owner, accountA, accountB} = await loadFixture(fixture)
       await shadowFactory.setApprovalForAll(accountA.address, '100');
+      await shadow.approve(accountA.address, '100');
+      await shadow.increaseAllowance(accountA.address, '100')
       const balanceOwnerBefore = await shadow.balanceOf(owner.address)
       const balanceBBefore = await shadow.balanceOf(accountB.address)
       await shadow.connect(accountA).transferFrom(owner.address, accountB.address, '100')
