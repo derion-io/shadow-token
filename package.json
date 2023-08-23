@@ -7,7 +7,7 @@
     "prettier": "prettier --write **/*.sol",
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "coverage": "hardhat coverage",
+    "coverage": "coverage=true hardhat coverage",
     "testnet": "hardhat run --network testnet",
     "mainnet": "hardhat run --network mainnet",
     "deploy:ganache": "npx hardhat run scripts/AllContracts.ganacheDeploy.js --network ganache"
