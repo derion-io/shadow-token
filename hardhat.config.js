@@ -50,6 +50,7 @@ const argv = require('yargs/yargs')()
 
 require('@nomiclabs/hardhat-truffle5');
 require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-solhint");
 require('hardhat-ignore-warnings');
 require('hardhat-exposed');
 
