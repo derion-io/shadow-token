@@ -7,6 +7,7 @@
     "prettier": "prettier --write **/*.sol",
     "compile": "hardhat compile",
     "test": "hardhat test",
+    "lint": "hardhat check",
     "coverage": "coverage=true hardhat coverage",
     "testnet": "hardhat run --network testnet",
     "mainnet": "hardhat run --network mainnet",
