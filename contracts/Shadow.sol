@@ -18,42 +18,6 @@ contract Shadow is IERC20, IERC20Metadata {
         FACTORY = factory;
     }
 
-    /// @notice Returns the metadata of this (MetaProxy) contract.
-    /// Only relevant with contracts created via the MetaProxy standard.
-    /// @dev This function is aimed to be invoked with- & without a call.
-    function ID() public pure returns (uint256 id) {
-        assembly {
-            id := calldataload(sub(calldatasize(), 32))
-        }
-    }
-
-    function name() public view virtual override returns (string memory) {
-        return IShadowFactory(FACTORY).getShadowName(ID());
-    }
-
-    function symbol() public view virtual override returns (string memory) {
-        return IShadowFactory(FACTORY).getShadowSymbol(ID());
-    }
-
-    function decimals() public view virtual override returns (uint8) {
-        return IShadowFactory(FACTORY).getShadowDecimals(ID());
-    }
-
-    function totalSupply() public view override returns (uint256) {
-        return IERC1155Supply(FACTORY).totalSupply(ID());
-    }
-
-    function balanceOf(address account) public view override returns (uint256) {
-        return IERC1155(FACTORY).balanceOf(account, ID());
-    }
-
-    function allowance(address owner, address spender) public view virtual override returns (uint256) {
-        if (IERC1155(FACTORY).isApprovedForAll(owner, spender)) {
-            return type(uint256).max;
-        }
-        return s_allowances[owner][spender];
-    }
-
     function approve(address spender, uint256 amount) public virtual override returns (bool) {
         if (!IERC1155(FACTORY).isApprovedForAll(msg.sender, spender)) {
             _approve(msg.sender, spender, amount);
@@ -94,6 +58,42 @@ contract Shadow is IERC20, IERC20Metadata {
         return true;
     }
 
+    function name() public view virtual override returns (string memory) {
+        return IShadowFactory(FACTORY).getShadowName(ID());
+    }
+
+    function symbol() public view virtual override returns (string memory) {
+        return IShadowFactory(FACTORY).getShadowSymbol(ID());
+    }
+
+    function decimals() public view virtual override returns (uint8) {
+        return IShadowFactory(FACTORY).getShadowDecimals(ID());
+    }
+
+    function totalSupply() public view override returns (uint256) {
+        return IERC1155Supply(FACTORY).totalSupply(ID());
+    }
+
+    function balanceOf(address account) public view override returns (uint256) {
+        return IERC1155(FACTORY).balanceOf(account, ID());
+    }
+
+    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+        if (IERC1155(FACTORY).isApprovedForAll(owner, spender)) {
+            return type(uint256).max;
+        }
+        return s_allowances[owner][spender];
+    }
+
+    /// @notice Returns the metadata of this (MetaProxy) contract.
+    /// Only relevant with contracts created via the MetaProxy standard.
+    /// @dev This function is aimed to be invoked with- & without a call.
+    function ID() public pure returns (uint256 id) {
+        assembly {
+            id := calldataload(sub(calldatasize(), 32))
+        }
+    }
+   
     function _approve(
         address owner,
         address spender,
