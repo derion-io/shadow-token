@@ -2,13 +2,12 @@
 pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/utils/Create2.sol";
-import "@derivable/erc1155-maturity/contracts/token/ERC1155/ERC1155Maturity.sol";
 
 import "./Shadow.sol";
 import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
-contract ShadowFactory is IShadowFactory, ERC1155Maturity {
+abstract contract ShadowFactory is IShadowFactory {
     address internal immutable CODE;
 
     modifier onlyShadow(uint256 id) {
@@ -17,7 +16,7 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         _;
     }
 
-    constructor(string memory uri) ERC1155Maturity(uri) {
+    constructor() {
         CODE = address(new Shadow{salt: 0}(address(this)));
     }
 
@@ -65,18 +64,13 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal virtual override {
-        address shadowToken = computeShadowAddress(id);
-        if (msg.sender == shadowToken) {
-            return; // skip the acceptance check
-        }
-        super._doSafeTransferAcceptanceCheck(
-            operator,
-            from,
-            to,
-            id,
-            amount,
-            data
-        );
-    }
+    ) internal virtual;
+
+    function _safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) internal virtual;
 }

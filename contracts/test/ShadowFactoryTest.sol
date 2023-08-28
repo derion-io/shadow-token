@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import "../ShadowFactory.sol";
+import "./Token.sol";
 
-contract ShadowFactoryMintable is ShadowFactory {
-    constructor() ShadowFactory("") {}
+contract ShadowFactoryMintable is Token {
+    constructor() Token("") {}
 
     function mint(
         address to,
