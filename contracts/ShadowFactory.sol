@@ -9,7 +9,7 @@ import "./interfaces/IShadowFactory.sol";
 import "./MetaProxy.sol";
 
 contract ShadowFactory is IShadowFactory, ERC1155Maturity {
-    address immutable internal CODE;
+    address internal immutable CODE;
 
     modifier onlyShadow(uint256 id) {
         address shadowToken = computeShadowAddress(id);
@@ -26,23 +26,6 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         require(shadowToken != address(0), "ShadowFactory: Failed on deploy");
     }
 
-    function computeShadowAddress(uint256 id) public view override returns (address pool) {
-        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(CODE, id);
-        return Create2.computeAddress(0, bytecodeHash, address(this));
-    }
-
-    function getShadowName(uint256) public view virtual returns (string memory) {
-        return "Derivable Shadow Token";
-    }
-
-    function getShadowSymbol(uint256) public view virtual returns (string memory) {
-        return "DST";
-    }
-
-    function getShadowDecimals(uint256) public view virtual returns (uint8) {
-        return 18;
-    }
-
     function safeTransferFromByShadow(
         address from,
         address to,
@@ -52,6 +35,29 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         return _safeTransferFrom(from, to, id, amount, "");
     }
 
+    function computeShadowAddress(
+        uint256 id
+    ) public view override returns (address pool) {
+        bytes32 bytecodeHash = MetaProxy.computeBytecodeHash(CODE, id);
+        return Create2.computeAddress(0, bytecodeHash, address(this));
+    }
+
+    function getShadowName(
+        uint256
+    ) public view virtual returns (string memory) {
+        return "Derivable Shadow Token";
+    }
+
+    function getShadowSymbol(
+        uint256
+    ) public view virtual returns (string memory) {
+        return "DST";
+    }
+
+    function getShadowDecimals(uint256) public view virtual returns (uint8) {
+        return 18;
+    }
+
     function _doSafeTransferAcceptanceCheck(
         address operator,
         address from,
@@ -59,11 +65,18 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal override virtual {
+    ) internal virtual override {
         address shadowToken = computeShadowAddress(id);
         if (msg.sender == shadowToken) {
             return; // skip the acceptance check
         }
-        super._doSafeTransferAcceptanceCheck(operator, from, to, id, amount, data);
+        super._doSafeTransferAcceptanceCheck(
+            operator,
+            from,
+            to,
+            id,
+            amount,
+            data
+        );
     }
 }
