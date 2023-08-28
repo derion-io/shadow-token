@@ -18,29 +18,52 @@ contract Shadow is IERC20, IERC20Metadata {
         FACTORY = factory;
     }
 
-    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual override returns (bool) {
         if (!IERC1155(FACTORY).isApprovedForAll(msg.sender, spender)) {
             _approve(msg.sender, spender, amount);
         }
         return true;
     }
 
-    function transfer(address to, uint256 amount) public override returns (bool) {
+    function transfer(
+        address to,
+        uint256 amount
+    ) public override returns (bool) {
         require(to != address(0), "ERC20: transfer to the zero address");
-        IShadowFactory(FACTORY).safeTransferFromByShadow(msg.sender, to, ID(), amount);
+        IShadowFactory(FACTORY).safeTransferFromByShadow(
+            msg.sender,
+            to,
+            ID(),
+            amount
+        );
         emit Transfer(msg.sender, to, amount);
         return true;
     }
 
-    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) public override returns (bool) {
         require(to != address(0), "ERC20: transfer to the zero address");
         _spendAllowance(from, msg.sender, amount);
-        IShadowFactory(FACTORY).safeTransferFromByShadow(from, to, ID(), amount);
+        IShadowFactory(FACTORY).safeTransferFromByShadow(
+            from,
+            to,
+            ID(),
+            amount
+        );
         emit Transfer(from, to, amount);
         return true;
     }
 
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
+    function increaseAllowance(
+        address spender,
+        uint256 addedValue
+    ) public virtual returns (bool) {
         uint256 currentAllowance = allowance(msg.sender, spender);
         if (currentAllowance != type(uint256).max) {
             _approve(msg.sender, spender, currentAllowance + addedValue);
@@ -48,9 +71,15 @@ contract Shadow is IERC20, IERC20Metadata {
         return true;
     }
 
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
+    function decreaseAllowance(
+        address spender,
+        uint256 subtractedValue
+    ) public virtual returns (bool) {
         uint256 currentAllowance = allowance(msg.sender, spender);
-        require(currentAllowance >= subtractedValue, "ERC20: insufficient allowance");
+        require(
+            currentAllowance >= subtractedValue,
+            "ERC20: insufficient allowance"
+        );
         unchecked {
             _approve(msg.sender, spender, currentAllowance - subtractedValue);
         }
@@ -78,7 +107,10 @@ contract Shadow is IERC20, IERC20Metadata {
         return IERC1155(FACTORY).balanceOf(account, ID());
     }
 
-    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+    function allowance(
+        address owner,
+        address spender
+    ) public view virtual override returns (uint256) {
         if (IERC1155(FACTORY).isApprovedForAll(owner, spender)) {
             return type(uint256).max;
         }
@@ -93,7 +125,7 @@ contract Shadow is IERC20, IERC20Metadata {
             id := calldataload(sub(calldatasize(), 32))
         }
     }
-   
+
     function _approve(
         address owner,
         address spender,
@@ -113,7 +145,10 @@ contract Shadow is IERC20, IERC20Metadata {
     ) internal virtual {
         uint256 currentAllowance = allowance(owner, spender);
         if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "ERC20: insufficient allowance");
+            require(
+                currentAllowance >= amount,
+                "ERC20: insufficient allowance"
+            );
             unchecked {
                 _approve(owner, spender, currentAllowance - amount);
             }
