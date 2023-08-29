@@ -87,7 +87,7 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
             it('reverts', async function () {
               await expectRevert(
                 this.token.transferFrom(tokenOwner, to, amount, { from: spender }),
-                `Maturity: insufficient balance`,
+                `INSUFFICIENT_BALANCE`,
               );
             });
           });
@@ -121,7 +121,7 @@ function shouldBehaveLikeERC20(errorPrefix, initialSupply, initialHolder, recipi
             it('reverts', async function () {
               await expectRevert(
                 this.token.transferFrom(tokenOwner, to, amount, { from: spender }),
-                `Maturity: insufficient balance`,
+                `INSUFFICIENT_BALANCE`,
               );
             });
           });
@@ -191,7 +191,7 @@ function shouldBehaveLikeERC20Transfer(errorPrefix, from, to, balance, transfer)
       const amount = balance.addn(1);
 
       it('reverts', async function () {
-        await expectRevert(transfer.call(this, from, to, amount), `Maturity: insufficient balance`);
+        await expectRevert(transfer.call(this, from, to, amount), `INSUFFICIENT_BALANCE`);
       });
     });
 

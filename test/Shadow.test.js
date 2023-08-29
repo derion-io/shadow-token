@@ -86,14 +86,14 @@ describe("Shadow", function () {
       const erc20BalanceBefore = await shadow.balanceOf(owner.address)
       await expect(
         shadow.transfer(accountA.address, erc20BalanceBefore.add(1).toString())
-      ).to.be.revertedWith('balance')
+      ).to.be.revertedWith('INSUFFICIENT_BALANCE')
       await expect(shadowFactory.safeTransferFrom(
         owner.address, 
         accountA.address, 
         0, 
         erc20BalanceBefore.add(1).toString(),
         0x0
-      )).to.be.revertedWith('Maturity: insufficient balance')
+      )).to.be.revertedWith('INSUFFICIENT_BALANCE')
     })
     it("Transfer to contract", async function () {
       const {shadow, shadowFactory, fakeShadow, owner} = await loadFixture(fixture)
