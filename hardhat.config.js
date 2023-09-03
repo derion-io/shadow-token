@@ -67,6 +67,7 @@ module.exports = {
   solidity: {
     version: argv.compiler,
     settings: {
+      evmVersion: 'paris',
       optimizer: {
         enabled: withOptimizations,
         runs: 200,
