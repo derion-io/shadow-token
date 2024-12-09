@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "../ShadowFactory.sol";
 
 contract ShadowFactoryMintable is ShadowFactory {
-    constructor() ShadowFactory("") {}
+    constructor() ShadowFactory("", "Derion Shadow Token", "DST") {}
 
     function mint(
         address to,

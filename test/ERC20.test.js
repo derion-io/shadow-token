@@ -14,7 +14,7 @@ const Shadow = artifacts.require("Shadow")
 contract('ERC20', function (accounts) {
   const [initialHolder, recipient, anotherAccount] = accounts;
 
-  const name = 'Derivable Shadow Token';
+  const name = 'Derion Shadow Token';
   const symbol = 'DST';
 
   const initialSupply = new BN(100);

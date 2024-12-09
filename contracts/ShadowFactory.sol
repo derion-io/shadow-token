@@ -10,6 +10,8 @@ import "./MetaProxy.sol";
 
 contract ShadowFactory is IShadowFactory, ERC1155Maturity {
     address internal immutable CODE;
+    bytes32 internal immutable NAME;
+    bytes32 internal immutable SYMBOL;
 
     modifier onlyShadow(uint256 id) {
         address shadowToken = computeShadowAddress(id);
@@ -17,8 +19,14 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
         _;
     }
 
-    constructor(string memory uri) ERC1155Maturity(uri) {
+    constructor(
+        string memory uri,
+        bytes32 name,
+        bytes32 symbol
+    ) ERC1155Maturity(uri) {
         CODE = address(new Shadow{salt: 0}(address(this)));
+        NAME = name;
+        SYMBOL = symbol;
     }
 
     function deployShadow(uint256 id) external returns (address shadowToken) {
@@ -45,13 +53,13 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
     function getShadowName(
         uint256
     ) public view virtual returns (string memory) {
-        return "Derivable Shadow Token";
+        return _bytes32ToString(NAME);
     }
 
     function getShadowSymbol(
         uint256
     ) public view virtual returns (string memory) {
-        return "DST";
+        return _bytes32ToString(SYMBOL);
     }
 
     function getShadowDecimals(uint256) public view virtual returns (uint8) {
@@ -78,5 +86,17 @@ contract ShadowFactory is IShadowFactory, ERC1155Maturity {
             amount,
             data
         );
+    }
+
+    function _bytes32ToString(bytes32 value) internal pure returns (string memory) {
+        uint256 i = 0;
+        while(i < 32 && value[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (i = 0; i < 32 && value[i] != 0; i++) {
+            bytesArray[i] = value[i];
+        }
+        return string(bytesArray);
     }
 }
