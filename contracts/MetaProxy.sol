@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity 0.8.20;
+pragma solidity ^0.8.20;
 
 library MetaProxy {
     /// @dev Creates a new proxy for `targetContract` with metadata from memory starting at `offset` and `length` bytes.

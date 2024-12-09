@@ -1,5 +1,5 @@
 {
-  "name": "@derivable/shadow-token",
+  "name": "@derion/shadow-token",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "deploy:ganache": "npx hardhat run scripts/AllContracts.ganacheDeploy.js --network ganache"
   },
   "dependencies": {
-    "@derivable/erc1155-maturity": "https://github.com/derivable-labs/erc1155-maturity.git"
+    "@derion/erc1155-maturity": "https://github.com/derion-io/erc1155-maturity.git"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",

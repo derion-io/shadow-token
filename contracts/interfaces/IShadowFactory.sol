@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.20;
+pragma solidity ^0.8.20;
 
-import "@derivable/erc1155-maturity/contracts/token/ERC1155/IERC1155Maturity.sol";
+import "@derion/erc1155-maturity/contracts/token/ERC1155/IERC1155Maturity.sol";
 
 interface IShadowFactory is IERC1155Maturity {
     function safeTransferFromByShadow(

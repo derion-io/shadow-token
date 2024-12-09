@@ -40,7 +40,7 @@ const argv = require('yargs/yargs')()
     compiler: {
       alias: 'compileVersion',
       type: 'string',
-      default: '0.8.20',
+      default: '0.8.28',
     },
     coinmarketcap: {
       alias: 'coinmarketcapApiKey',
@@ -67,7 +67,6 @@ module.exports = {
   solidity: {
     version: argv.compiler,
     settings: {
-      evmVersion: 'paris',
       optimizer: {
         enabled: withOptimizations,
         runs: 200,
