@@ -68,7 +68,7 @@
 
 "@derion/erc1155-maturity@https://github.com/derion-io/erc1155-maturity.git":
   version "1.0.0"
-  resolved "https://github.com/derion-io/erc1155-maturity.git#6976bfcf72630e39ddce275562bb5bce633025a1"
+  resolved "https://github.com/derion-io/erc1155-maturity.git#debe41d0c135a0cad6a9c450605dbae38783e896"
 
 "@ensdomains/address-encoder@^0.1.7":
   version "0.1.9"

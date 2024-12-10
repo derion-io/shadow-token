@@ -65,11 +65,15 @@ const withOptimizations = argv.gas || argv.compileMode === 'production';
  */
 module.exports = {
   solidity: {
-    version: argv.compiler,
+    version: "0.8.28",
     settings: {
+      evmVersion: 'cancun',
       optimizer: {
-        enabled: withOptimizations,
-        runs: 200,
+        enabled: true,
+        runs: 1000000,
+      },
+      metadata: {
+        bytecodeHash: 'none',
       },
       viaIR: withOptimizations && argv.ir,
       outputSelection: { '*': { '*': ['storageLayout'] } },
